@@ -1,0 +1,24 @@
+{
+  "name": "task-manager-gateway",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r \"ts-node\" src\\index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "microservices"
+  ],
+  "author": "Alexander Mineev",
+  "license": "MIT",
+  "devDependencies": {
+    "apollo-server": "^2.12.0",
+    "nodemon": "^2.0.3",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3",
+    "graphql": "^15.0.0",
+    "graphql-tools": "^5.0.0"
+  }
+}
