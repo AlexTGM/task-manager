@@ -1,4 +1,15 @@
-import { typeDefs } from './typedefs';
-import { resolvers } from './resolvers';
+import { ApolloServer } from 'apollo-server';
+import { makeExecutableSchema } from 'graphql-tools';
 
-export { typeDefs, resolvers }
+import typeDefs from './typedefs';
+import resolvers from './resolvers';
+
+const server = new ApolloServer({
+  schema: makeExecutableSchema({
+    typeDefs, resolvers
+  })
+});
+
+server.listen({ port: 5001 }).then(({ url }) => {
+  console.log(`Projects server ready at ${url}`)
+})

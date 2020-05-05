@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server';
 
-export const typeDefs = gql`
+export default gql`
 type Task {
   id: ID!
   title: String

@@ -1,16 +1,14 @@
-import { makeExecutableSchema, mergeSchemas, delegateToSchema } from 'graphql-tools';
+import {
+  mergeSchemas,
+  delegateToSchema,
+  makeRemoteExecutableSchema,
+  introspectSchema,
+} from 'graphql-tools';
+
+import { HttpLink } from 'apollo-link-http';
+import fetch from 'cross-fetch';
 
 import { ApolloServer, gql } from 'apollo-server';
-
-import { 
-  typeDefs as ProjectsTypeDefs, 
-  resolvers as ProjectsResolvers
-} from './projects';
-
-import { 
-  typeDefs as TasksTypeDefs, 
-  resolvers as TasksResolvers
-} from './tasks';
 
 const linkTypeDefs = gql`
   extend type Project {
@@ -18,45 +16,50 @@ const linkTypeDefs = gql`
   }
 `;
 
-const projectsSchema = makeExecutableSchema({
-  typeDefs: ProjectsTypeDefs,
-  resolvers: ProjectsResolvers
-})
+const projectsLink = new HttpLink({ uri: 'http://localhost:5001/graphql', fetch });
+const tasksLink = new HttpLink({ uri: 'http://localhost:5002/graphql', fetch });
 
-const tasksSchema = makeExecutableSchema({
-  typeDefs: TasksTypeDefs,
-  resolvers: TasksResolvers
-})
+(async () => {
+  const projectsSchema = makeRemoteExecutableSchema({
+    schema: await introspectSchema(projectsLink),
+    link: projectsLink
+  })
 
-const schema = mergeSchemas({
-  subschemas: [
-    { schema: projectsSchema },
-    { schema: tasksSchema }
-  ],
-  typeDefs: linkTypeDefs,
-  resolvers: {
-    Project: {
-      tasks: {
-        fragment: `... on Project { tasksIds }`,
-        resolve(parent, args, context, info) {
-          return delegateToSchema({
-            schema: tasksSchema,
-            operation: 'query',
-            fieldName: 'findTasksByIds',
-            args: {
-              ids: parent.tasksIds
-            },
-            context,
-            info
-          })
+  const tasksSchema = makeRemoteExecutableSchema({
+    schema: await introspectSchema(tasksLink),
+    link: tasksLink
+  })
+
+  const schema = mergeSchemas({
+    subschemas: [
+      { schema: projectsSchema },
+      { schema: tasksSchema }
+    ],
+    typeDefs: linkTypeDefs,
+    resolvers: {
+      Project: {
+        tasks: {
+          fragment: `... on Project { tasksIds }`,
+          resolve(parent, args, context, info) {
+            return delegateToSchema({
+              schema: tasksSchema,
+              operation: 'query',
+              fieldName: 'findTasksByIds',
+              args: {
+                ids: parent.tasksIds
+              },
+              context,
+              info
+            })
+          }
         }
       }
     }
-  }
-});
+  });
 
-const server = new ApolloServer({ schema });
+  const server = new ApolloServer({ schema });
 
-server.listen({ port: 5000 }).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`)
-});
+  server.listen({ port: 5000 }).then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`)
+  });
+})();

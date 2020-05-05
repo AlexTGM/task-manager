@@ -12,7 +12,7 @@ const projects: Project[] = ([
 
 const pubsub = new PubSub();
 
-export const resolvers = {
+export default {
   Query: {
     listProjects: (): Project[] => 
       projects,

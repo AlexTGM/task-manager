@@ -9,7 +9,7 @@ const tasks: Task[] = ([
   { id: '6', title: 'sixth task', description: 'description'},
 ])
 
-export const resolvers = {
+export default {
   Query: {
     listTasks: (): Task[] => tasks,
 
