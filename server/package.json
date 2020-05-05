@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -r \"ts-node\" src\\index.ts",
+    "start-gateway": "nodemon -r \"ts-node\" src\\index.ts",
+    "start-service-projects": "nodemon -r \"ts-node\" src\\projects\\index.ts",
+    "start-service-tasks": "nodemon -r \"ts-node\" src\\tasks\\index.ts",
+    "start-services": "concurrently \"npm:start-service-*\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "apollo-server": "^2.12.0",
+    "concurrently": "^5.2.0",
     "nodemon": "^2.0.3",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",

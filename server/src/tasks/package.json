@@ -1,11 +1,8 @@
 {
   "name": "task-manager-tasks",
-  "version": "0.1.0",
   "scripts": {
     "start": "nodemon -r \"ts-node\" index.ts"
   },
-  "author": "Alexander Mineev",
-  "license": "MIT",
   "devDependencies": {
     "apollo-server": "^2.12.0",
     "nodemon": "^2.0.3",
