@@ -12,4 +12,14 @@ type Query {
   listProjects: [Project]
   findProjectById(id: ID!): Project
 }
+
+type Mutation {
+  createProject(request: CreateProject!): [Project]
+  linkTasks(ids: [ID]!): Project
+}
+
+input CreateProject {
+  title: String
+  description: String
+}
 `

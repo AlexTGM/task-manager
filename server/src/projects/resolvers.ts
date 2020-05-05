@@ -16,4 +16,20 @@ export const resolvers = {
     findProjectById: (_, { id }: { id: string }): Project => 
       projects.find(project => project.id === id),
   },
+  Mutation: {
+    createProject: (_: any, { title, description } : {
+      title: string, description: string
+    }): Project[] => {
+      const newProject: Project = { 
+        id: uuidv4(), 
+        title: title,
+        description: description, 
+        tasksIds: [ '1', '2' ]
+      };
+
+      projects.push(newProject);
+
+      return projects;
+    },
+  },
 }
