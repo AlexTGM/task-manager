@@ -1,14 +1,8 @@
 module.exports = {
   presets: [
-    '@vue/cli-plugin-babel/preset',
-    ["env", {
-      "modules": false
-    }],
-    "stage-2"
+    '@vue/cli-plugin-babel/preset'
   ],
   "plugins": [
-    "graphql-tag",
-    "transform-vue-jsx",
-    "transform-runtime"
+    "graphql-tag"
   ]
 };

@@ -25,19 +25,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
-import { mapGetters } from 'vuex';
+import { projectsMapper } from '../module/store';
 
-import { Project } from '../store/models/Project';
+export default Vue.extend({
+  name: 'ProjectsListComponent',
 
-@Component({
-  computed: { ...mapGetters(['projects']) },
+  computed: projectsMapper.mapGetters([
+    'projects',
+  ]),
 
-  beforeMount() {
-    this.$store.dispatch('loadProjects');
+  methods: projectsMapper.mapActions({
+    loadProjectsAsync: 'loadProjectsAsync',
+  }),
+
+  async mounted() {
+    await this.loadProjectsAsync();
   },
-})
-export default class HomeComponent extends Vue {
-}
+});
 </script>

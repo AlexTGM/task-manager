@@ -1,7 +1,5 @@
-export interface Project {
+export interface TaskResponse {
   id: string;
   title: string;
   description: string;
-
-  tasksIds: string[];
 }

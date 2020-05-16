@@ -16,7 +16,7 @@
 
     <div id="menu" :class="[ 'navbar-menu', { 'is-active': menuToggled } ]">
       <div class="navbar-start">
-        <router-link class="navbar-item" to="/">Home</router-link>
+        <router-link class="navbar-item" to="/projects">Projects</router-link>
       </div>
     </div>
   </nav>
